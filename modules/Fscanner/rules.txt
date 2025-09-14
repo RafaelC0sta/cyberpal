@@ -1,0 +1,7 @@
+#THIS FILE WILL BE TO NAME RULES FOR THE SCANNER :D
+
+suspicious_api_calls||CreateProcessA|WinExec|LoadLibraryA
+suspicious_download||https?://|wget\s|-O\s/tmp
+suspicious_powershell||powershell|Invoke-Expression|IEX
+script_suspicious||eval\(|exec\(|base64_decode\(|system\(|shell_exec\(
+
