@@ -1,2 +1,7 @@
-sqlite3
+psutil
 requests
+flask
+pandas
+python-dateutil
+pytest
+
