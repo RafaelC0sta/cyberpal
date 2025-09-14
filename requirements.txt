@@ -4,4 +4,4 @@ flask
 pandas
 python-dateutil
 pytest
-
+psycopg2 
