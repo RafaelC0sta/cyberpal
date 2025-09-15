@@ -1,6 +1,7 @@
 import os
 import time
 from modules.teste import testar 
+from modules.Fscanner.filescanner import filescan
 
 def main():
     while True:
@@ -17,14 +18,13 @@ def main():
 
         match(op):
             case 1:
-                #fscanner
-                testar()
-                time.sleep(2)
-
+              path = str(input("Insert the file path: "))
+              filescan(path)
+              time.sleep(10)
             case 2:
                 #logparser
                 pass 
-            
+
             case 0:
                 print("Thanks for using Cyberpal")
                 break

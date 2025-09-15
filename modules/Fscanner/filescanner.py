@@ -104,13 +104,13 @@ def score_findings(ent: float, magic: List[str], size: int) -> Dict:
     return {"score": score, "reasons": reasons}
 
 
-def main():
-    ap = argparse.ArgumentParser(description="Simple local file scanner (CLI).")
-    ap.add_argument("file", help="Path to file to scan")
-    ap.add_argument("--min-strings", help="Minimum printable string length", type=int, default=4)
-    args = ap.parse_args()  
+def filescan(path):
+#    ap = argparse.ArgumentParser(description="Simple local file scanner (CLI).")
+#    ap.add_argument("file", help="Path to file to scan")
+ #   ap.add_argument("--min-strings", help="Minimum printable string length", type=int, default=4)
+#    args = ap.parse_args()  
 
-    path = args.file
+# path = args.file
     if not os.path.isfile(path):  
         print(f"[ERROR] File not found: {path}")
         return
@@ -120,7 +120,7 @@ def main():
     size = file_size(path)   
     ent = entropy(path)           
     magic = check_magic(path)     
-    strings = extract_strings(path, min_len=args.min_strings)  #
+ #   strings = extract_strings(path, min_len=args.min_strings)  #
     result = score_findings(ent, magic, size) 
 
     # Console summary
@@ -134,5 +134,4 @@ def main():
         for r in result["reasons"]:
             print(f"    * {r}")
    
-if __name__ == "__main__":
-    main()  
+ 
