@@ -26,10 +26,10 @@ def compute_hash(path: str) -> Dict[str, str]:
             "sha256": sha256.hexdigest(),
         }
 
-def file_size(path: str) -> int:
+def file_size(path: str) -> int:                                       
     return os.path.getsize(path)
 
-#entropy -= explanation and use in this project =- 
+#      entropy -= explanation and use in this project =- 
 
 #      entropry level goes from 0-8 
 #      this calculates how random the data is 
@@ -89,3 +89,50 @@ def check_magic(path: str) -> List[str]:
     return found
 
 
+# score
+
+def score_findings(ent: float, magic: List[str], size: int) -> Dict:
+    score = 0
+    reasons = []
+    if ent > 7.5:
+        score += 20
+        reasons.append(f"high entropy ({ent:.2f}) possible")
+    if magic:
+        reasons.append(f"file type signatures: {', '.join(magic)}")
+    if score > 100:  
+        score = 100
+    return {"score": score, "reasons": reasons}
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Simple local file scanner (CLI).")
+    ap.add_argument("file", help="Path to file to scan")
+    ap.add_argument("--min-strings", help="Minimum printable string length", type=int, default=4)
+    args = ap.parse_args()  
+
+    path = args.file
+    if not os.path.isfile(path):  
+        print(f"[ERROR] File not found: {path}")
+        return
+
+    print(f"[+] Scanning: {path}")
+    hashes = compute_hash(path)            
+    size = file_size(path)   
+    ent = entropy(path)           
+    magic = check_magic(path)     
+    strings = extract_strings(path, min_len=args.min_strings)  #
+    result = score_findings(ent, magic, size) 
+
+    # Console summary
+    print(f"  - Size: {size} bytes")
+    print(f"  - Entropy: {ent:.3f}")
+    print(f"  - Magic: {', '.join(magic) if magic else 'Unknown'}")
+    print(f"  - Hashes: MD5={hashes['md5']}, SHA1={hashes['sha1']}, SHA256={hashes['sha256']}")
+    print(f"  - Score: {result['score']} / 100")
+    if result["reasons"]:
+        # print("  - Reasons:")
+        for r in result["reasons"]:
+            print(f"    * {r}")
+   
+if __name__ == "__main__":
+    main()  
